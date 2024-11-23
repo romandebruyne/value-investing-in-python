@@ -1,6 +1,4 @@
-import pandas as pd
 import numpy as np
-from src.utils.calculation_utils import CalculationUtils
 
 class GrowthRateCalculator:
     def __init__(self):
@@ -9,6 +7,8 @@ class GrowthRateCalculator:
     @staticmethod
     def calculate_median_cagr(metric_series, period):
         """Function to calculate the median compound annual growth rate (CAGR)"""
+        from src.utils.calculation_utils import CalculationUtils
+
         # Create list containing years included in the period:
         years = [int(year) for year in list(metric_series.index)[-(period + 1):]]
 
