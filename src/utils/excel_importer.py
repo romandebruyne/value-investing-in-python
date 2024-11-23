@@ -113,10 +113,10 @@ class ExcelImporter:
     @staticmethod
     def import_spread_tables_excel(file_name):
         file_path = os.path.join("../data/", file_name)
-        return pd.read_excel(file_path, sheet_name=0, header=0, skiprows=17, nrows=15, usecols='A:D,F:I')
+        return pd.read_excel(file_path, sheet_name=0, skiprows=17, header=0,nrows=15, usecols='A:D,F:I')
 
     @staticmethod
     def import_risk_premiums_excel(file_name):
         file_path = os.path.join("../data/", file_name)
-        return pd.read_excel(file_path, sheet_name='Regional Weighted Averages', header=0, skiprows=182, nrows=11,
-                             usecols='A:B')
+        return pd.read_excel(file_path, sheet_name='Regional Simple Averages', skiprows=3, header=0, nrows=9,
+                             usecols='A,C')
