@@ -12,6 +12,81 @@ class Evaluator:
         raise NotImplementedError('This class should not be instantiated.')
 
     @staticmethod
+    def plot_metric_development(metric_series, assessment_period, plot_title=None):
+        """Function to visualize the relevant metrics' development over a specified period."""
+
+        # Check the input period:
+        if assessment_period.value < 1 or assessment_period.value > 10:
+            print('Invalid assessment period.')
+            return
+
+        # Create series containing data for the specified period:
+        metric_series_period = metric_series[-assessment_period.value:]
+
+        # Calculate median value:
+        median_value = CalculationUtils.compute_median(metric_series_period)
+
+        # Create plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.plot(metric_series_period)
+
+        if plot_title is None:
+            ax.set_title(metric_series.name)
+        else:
+            ax.set_title(plot_title)
+
+        if median_value > 100:
+            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+        elif 'capex_mil' in metric_series.name:
+            ax.invert_yaxis()
+            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+        else:
+            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.2f}'))
+
+        ax.axhline(median_value, color='red', label='Median (during assessment period)')
+        ax.grid(visible=True, axis='y')
+        ax.legend(loc='upper left')
+        plt.show()
+
+    @staticmethod
+    def plot_metric_development_comparison(list_of_metrics, assessment_period, plot_title):
+        """Function to visualize the development of more than one metric over a specified period in one single plot."""
+
+        # Check the input period:
+        if (assessment_period.value < 1) or (assessment_period.value > 10):
+            print("Invalid assessment period.")
+            return
+
+        # Create plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.set_title(plot_title)
+
+        for metric in list_of_metrics:
+            ax.plot(metric[-assessment_period.value:], label=metric.name)
+
+        # Differentiate between metrics denoted in percent and absolute values
+        if metric.describe()['50%'] <= 100:
+            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:.2f}'))
+        else:
+            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+
+        ax.grid(visible=True, axis='y')
+        ax.legend(loc='upper left')
+        plt.show()
+
+    @staticmethod
+    def plot_cumulative_returns(stock_ticker, stock_returns):
+        """Function to visualize the cumulative returns for both stock and benchmark data."""
+
+        fig, ax = plt.subplots(figsize=(16, 6))
+        ax.plot(stock_returns['Cumulative_Returns'], label='Stock')
+        ax.set_title(f'Cumulative returns of {stock_ticker} stock')
+        ax.yaxis.set_major_formatter(StrMethodFormatter('{x:.2f}'))
+        ax.xaxis.set_major_locator(plt.MaxNLocator(10))
+        ax.legend(loc='upper left')
+        plt.show()
+
+    @staticmethod
     def assess_metrics(dataset):
         median_growth_rates = CalculationUtils.calculate_median_growth_rates(dataset)
         median_values = CalculationUtils.calculate_median_values(dataset)
