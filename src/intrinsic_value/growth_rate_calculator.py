@@ -10,7 +10,7 @@ class GrowthRateCalculator:
         from src.utils.calculation_utils import CalculationUtils
 
         # Create list containing years included in the period:
-        years = [int(year) for year in list(metric_series.index)[-(period + 1):]]
+        years = [int(year) for year in list(metric_series.index)[-(period.value + 1):]]
 
         # Create empty list to collect growth rates:
         cagrs = []

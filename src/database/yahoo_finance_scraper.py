@@ -15,7 +15,7 @@ class YahooFinanceScraper:
             return
 
         # Check interval
-        if interval not in [i for i in DataInterval]:
+        if interval.value not in [i.value for i in DataInterval]:
             print('Invalid interval.')
             return
 

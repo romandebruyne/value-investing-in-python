@@ -22,7 +22,7 @@ class DamodaranScraper:
         # Get data. Pause between both tables to avoid excessive webscraping:
         spread_table = pd.read_excel(spread_url, sheet_name=0, skiprows=17, header=0, nrows=15, usecols='A:D,F:I')
         time.sleep(5.0)
-        risk_premiums = pd.read_excel(risk_premiums_url, sheet_name='Regional Weighted Averages', skiprows=3, header=0,
+        risk_premiums = pd.read_excel(risk_premiums_url, sheet_name='Regional Simple Averages', skiprows=3, header=0,
                                       nrows=9, usecols='A,C')
 
         return spread_table, risk_premiums
