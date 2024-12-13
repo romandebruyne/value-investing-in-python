@@ -38,7 +38,7 @@ class CalculationUtils:
             else:
                 metric_series = dataset[metric]
 
-            for period in assessment_periods:
+            for period in assessment_periods[::-1]:
                 # Compute compound annual growth rate (CAGR) & append median CAGR to dictionary:
                 results[metric].append(GrowthRateCalculator.calculate_median_cagr(metric_series, period))
 
@@ -63,7 +63,7 @@ class CalculationUtils:
             # Create series containing the metric's values:
             metric_series = dataset[metric]
 
-            for period in assessment_periods:
+            for period in assessment_periods[::-1]:
                 # Append median value to dictionary:
                 results[metric].append(CalculationUtils.compute_median(metric_series[-period.value:]))
 
