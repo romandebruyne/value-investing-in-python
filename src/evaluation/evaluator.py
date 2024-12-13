@@ -64,11 +64,11 @@ class Evaluator:
         for metric in list_of_metrics:
             ax.plot(metric[-assessment_period.value:], label=metric.name)
 
-        # Differentiate between metrics denoted in percent and absolute values
-        if metric.describe()['50%'] <= 100:
-            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:.2f}'))
-        else:
-            ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+            # Differentiate between metrics denoted in percent and absolute values
+            if metric.describe()['50%'] <= 100:
+                ax.yaxis.set_major_formatter(StrMethodFormatter('{x:.2f}'))
+            else:
+                ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
 
         ax.grid(visible=True, axis='y')
         ax.legend(loc='upper left')
@@ -95,7 +95,7 @@ class Evaluator:
         median_growth_rates['points'] = median_growth_rates.apply(lambda row: np.sum(row > 0), axis=1)
 
         # Median value metrics
-        points_median_value = []
+        points_median_value = list()
 
         # Payout ratio: 1, if value < 80%. Maximum points: 3.
         points_median_value.append(np.sum(median_values.loc['payout_ratio', :] < 80))
@@ -133,7 +133,7 @@ class Evaluator:
 
     @staticmethod
     def assess_intrinsic_value(stock_prices, intrinsic_value, margin_of_safety_pct):
-        """"Function to check whether the stock is under- or overvalued."""
+        """Function to check whether the stock is under- or overvalued."""
 
         # Get latest stock adjusted closing price:
         latest_adj_close = round(stock_prices['Adj Close'].iloc[-1], 2)
@@ -147,20 +147,24 @@ class Evaluator:
 
         # Is stock under- or overvalued?
         if latest_adj_close > intrinsic_value_minus_margin:
-            difference = latest_adj_close - intrinsic_value_minus_margin
+            difference = round(latest_adj_close - intrinsic_value_minus_margin, 2)
             print(f'Stock is overvalued! Difference is equal to: {difference}')
         elif latest_adj_close < intrinsic_value_minus_margin:
-            difference = intrinsic_value_minus_margin - latest_adj_close
+            difference = round(intrinsic_value_minus_margin - latest_adj_close, 2)
             print(f'Stock is undervalued! Difference is equal to: {difference}')
         else:
             print('Indifference.')
 
-        # Plot 1-year development
+        # Plot development
         fig, ax = plt.subplots(figsize=(16, 6))
         ax.plot(stock_prices['Adj Close'])
-        ax.set_title("Stock's adjusted closing prices over the last year")
+        ax.set_title("Stock's adjusted closing price")
         ax.axhline(intrinsic_value_minus_margin, color='red', label='Intrinsic Value (after Margin of Safety)')
         ax.yaxis.set_major_formatter(StrMethodFormatter('{x:.2f}'))
+        x_labels = [f'{date.split("-")[0]}-{date.split("-")[1]}' for date in stock_prices.index]
+        x_ticks = np.arange(len(x_labels))
+        ax.set_xticks(x_ticks[::10], x_labels[::10])
+        ax.tick_params('x', labelrotation=45)
         ax.legend(loc='upper left')
         plt.show()
 

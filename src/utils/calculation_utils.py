@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from src.intrinsic_value.growth_rate_calculator import GrowthRateCalculator
+from src.utils.assessment_period import AssessmentPeriod
 
 class CalculationUtils:
     def __init__(self):
@@ -25,7 +26,7 @@ class CalculationUtils:
                             'operating_cash_flow_mil', 'free_cash_flow_mil', 'capex_mil']
 
         # Define assessment periods (last period = 9, because only 9 growth rates for a 10 year period are available):
-        assessment_periods = [9, 3, 1]
+        assessment_periods = [p for p in AssessmentPeriod]
 
         # Create dictionary to collect metric name and corresponding values:
         results = {key: [] for key in relevant_metrics}
@@ -53,7 +54,7 @@ class CalculationUtils:
                             'debt_to_equity_ratio']
 
         # Define assessment periods:
-        assessment_periods = [10, 3, 1]
+        assessment_periods = [p for p in AssessmentPeriod]
 
         # Create dictionary to collect metric name and corresponding values:
         results = {key: [] for key in relevant_metrics}
@@ -64,7 +65,7 @@ class CalculationUtils:
 
             for period in assessment_periods:
                 # Append median value to dictionary:
-                results[metric].append(CalculationUtils.compute_median(metric_series[-period:]))
+                results[metric].append(CalculationUtils.compute_median(metric_series[-period.value:]))
 
         # Return results as dataframe:
         return pd.DataFrame(results.values(), index=results.keys(), columns=['10Y', '3Y', '1Y'])
