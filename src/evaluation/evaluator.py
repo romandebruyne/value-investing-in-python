@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 from src.beta.beta_estimator import BetaEstimator
 from src.utils.calculation_utils import CalculationUtils
-from src.utils.period import Period
+from src.utils.assessment_period import AssessmentPeriod
 from src.utils.data_frequency import DataFrequency
 
 class Evaluator:
@@ -172,7 +172,7 @@ class Evaluator:
         1-Year Dividend Yield: higher or equal to 3."""
 
         # 1. 1-Year Beta:
-        beta_one_year = BetaEstimator.estimate_beta(stock_prices, benchmark_prices, Period.ONE_YEAR,
+        beta_one_year = BetaEstimator.estimate_beta(stock_prices, benchmark_prices, AssessmentPeriod.ONE_YEAR,
                                                     DataFrequency.DAILY)
 
         # 2. Momentum (current price relative to price 252 days, i.e. 1 trading year, ago)

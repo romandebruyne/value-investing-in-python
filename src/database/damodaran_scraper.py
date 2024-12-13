@@ -1,7 +1,6 @@
 import pandas as pd
 import ssl
 import time
-from src.utils.excel_importer import ExcelImporter
 
 class DamodaranScraper:
     def __init__(self):
@@ -39,4 +38,3 @@ class DamodaranScraper:
         risk_premiums_df.columns = ["region", "ERP"]
 
         return spread_nonfinancials, spread_financials, risk_premiums_df
-

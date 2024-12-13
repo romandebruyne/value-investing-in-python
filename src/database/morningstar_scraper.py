@@ -1,15 +1,10 @@
-from html.parser import incomplete
-
 import pandas as pd
 import numpy as np
-from bs4 import BeautifulSoup
 import requests
-import re
 import time
 
 from src.utils.data_category import DataCategory
 from src.utils.database_utils import DatabaseUtils
-
 
 class MorningstarScraper:
     def __init__(self, base_url, headers=None):
@@ -225,7 +220,8 @@ class MorningstarScraper:
 
     @staticmethod
     def scrape_and_combine_morningstar_data(morningstar_identifier, time_out_for_requests):
-        scraped_data = MorningstarScraper.scrape_morningstar_data(morningstar_identifier, 30.0)
+        scraped_data = MorningstarScraper.scrape_morningstar_data(morningstar_identifier, time_out_for_requests)
+
         growth_data = MorningstarScraper.collect_growth_data(scraped_data[0])
         efficiency_data = MorningstarScraper.collect_efficiency_data(scraped_data[1])
         financial_health_data = MorningstarScraper.collect_financial_health_data(scraped_data[2])

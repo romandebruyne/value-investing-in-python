@@ -1,7 +1,7 @@
 import pandas as pd
 import yfinance as yf
 from src.utils.data_interval import DataInterval
-from src.utils.period import Period
+from src.utils.assessment_period import AssessmentPeriod
 
 class YahooFinanceScraper:
     def __init__(self):
@@ -19,7 +19,8 @@ class YahooFinanceScraper:
             print('Invalid interval.')
             return
 
-        price_data = yf.download(ticker, period=period, interval=interval.value, multi_level_index=False, progress=True)
+        price_data = yf.download(ticker, period=period, interval=interval.value, multi_level_index=False,
+                                 progress=False)
         price_data.dropna(subset=['Adj Close'], axis=0, how='any', inplace=True)
 
         # Convert and return data
