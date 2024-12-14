@@ -80,7 +80,7 @@ class DiscountRateEstimator:
         """Function to estimate equity cost."""
 
         # Check company region input:
-        if company_region not in [r for r in CompanyRegion]:
+        if company_region.value not in [r.value for r in CompanyRegion]:
             print("Invalid company region.")
             return np.nan
 
